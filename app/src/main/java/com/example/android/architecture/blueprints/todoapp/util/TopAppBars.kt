@@ -49,6 +49,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.TodoTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TopAppBarDefaults
 
 @Composable
 fun TasksTopAppBar(
@@ -70,6 +72,7 @@ fun TasksTopAppBar(
             FilterTasksMenu(onFilterAllTasks, onFilterActiveTasks, onFilterCompletedTasks)
             MoreTasksMenu(onClearCompletedTasks, onRefresh)
         },
+        colors = todoTopBarColors(),
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -151,6 +154,7 @@ fun StatisticsTopAppBar(openDrawer: () -> Unit) {
                 Icon(Icons.Filled.Menu, stringResource(id = R.string.open_drawer))
             }
         },
+        colors = todoTopBarColors(),
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -171,6 +175,7 @@ fun TaskDetailTopAppBar(onBack: () -> Unit, onDelete: () -> Unit) {
                 Icon(Icons.Filled.Delete, stringResource(id = R.string.menu_delete_task))
             }
         },
+        colors = todoTopBarColors(),
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -184,6 +189,7 @@ fun AddEditTaskTopAppBar(@StringRes title: Int, onBack: () -> Unit) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(id = R.string.menu_back))
             }
         },
+        colors = todoTopBarColors(),
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -217,6 +223,18 @@ private fun TaskDetailTopAppBarPreview() {
         }
     }
 }
+/**
+ * Colores personalizados para todas las barras superiores
+ * (fondo morado y texto/íconos blancos) - Rodrigo Hurtado TI4F
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun todoTopBarColors() = TopAppBarDefaults.topAppBarColors(
+    containerColor = MaterialTheme.colorScheme.primary,
+    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+    actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+)
 
 @Preview
 @Composable
