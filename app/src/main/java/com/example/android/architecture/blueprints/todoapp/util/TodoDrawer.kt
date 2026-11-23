@@ -16,7 +16,6 @@
 
 package com.example.android.architecture.blueprints.todoapp.util
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -50,6 +49,9 @@ import com.example.android.architecture.blueprints.todoapp.TodoNavigationActions
 import com.example.android.architecture.blueprints.todoapp.TodoTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.TaskAlt
+import androidx.compose.foundation.layout.size
 
 @Composable
 fun AppModalDrawer(
@@ -107,6 +109,10 @@ private fun AppDrawer(
     }
 }
 
+/**
+ * Encabezado del menú lateral personalizado:
+ * fondo morado del tema con el ícono de la app - Rodrigo Hurtado TI4F
+ */
 @Composable
 private fun DrawerHeader(
     modifier: Modifier = Modifier
@@ -116,19 +122,20 @@ private fun DrawerHeader(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxWidth()
-            .background(primaryDarkColor)
+            .background(MaterialTheme.colorScheme.primary) // Morado del tema
             .height(dimensionResource(id = R.dimen.header_height))
             .padding(dimensionResource(id = R.dimen.header_padding))
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.logo_no_fill),
-            contentDescription =
-            stringResource(id = R.string.tasks_header_image_content_description),
-            modifier = Modifier.width(dimensionResource(id = R.dimen.header_image_width))
+        Icon(
+            imageVector = Icons.Outlined.TaskAlt,
+            contentDescription = stringResource(id = R.string.tasks_header_image_content_description),
+            tint = MaterialTheme.colorScheme.onPrimary,  // Ícono blanco
+            modifier = Modifier.size(64.dp)
         )
         Text(
             text = stringResource(id = R.string.navigation_view_header_title),
-            color = MaterialTheme.colorScheme.surface
+            color = MaterialTheme.colorScheme.onPrimary,
+            style = MaterialTheme.typography.titleMedium
         )
     }
 }
