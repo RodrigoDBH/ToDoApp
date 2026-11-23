@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
+/**
+ * ============================================
+ *  ToDoApp - U4RA7 | UTTN TI4F
+ *  Desarrollador: Perez Flores Zayda Yareth
+ *  Archivo: DataModules.kt
+ *  Descripción: [HILT] Módulos de inyección de dependencias.
+ *  Aquí se construye la base de datos Room ("Tasks.db") y se
+ *  conectan el repositorio y el DAO con el resto de la app.
+ * ============================================
+ */
+
 package com.example.android.architecture.blueprints.todoapp.di
 
 import android.content.Context
@@ -52,11 +63,13 @@ abstract class DataSourceModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
+// Módulo que provee la base de datos local a toda la app
 object DatabaseModule {
 
     @Singleton
     @Provides
     fun provideDataBase(@ApplicationContext context: Context): ToDoDatabase {
+        // Crea el archivo de base de datos "Tasks.db" en el teléfono
         return Room.databaseBuilder(
             context.applicationContext,
             ToDoDatabase::class.java,

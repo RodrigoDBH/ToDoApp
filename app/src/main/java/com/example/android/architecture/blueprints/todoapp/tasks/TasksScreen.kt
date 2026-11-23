@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+/**
+ * ============================================
+ *  ToDoApp - U4RA7 | UTTN TI4F
+ *  Desarrollador: Perez Flores Zayda Yareth
+ *  Archivo: TasksScreen.kt
+ *  Descripción: [UI - COMPOSE] Pantalla principal con la lista
+ *  de tareas y el Empty State personalizado cuando no hay tareas.
+ * ============================================
+ */
 package com.example.android.architecture.blueprints.todoapp.tasks
 
 import androidx.annotation.DrawableRes

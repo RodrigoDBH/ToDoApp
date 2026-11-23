@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
+/**
+ * ============================================
+ *  ToDoApp - U4RA7 | UTTN TI4F
+ *  Desarrollador: Hurtado Perez Rodrigo Daniel
+ *  Archivo: TopAppBars.kt
+ *  Descripción: [UI - COMPOSE] Barras superiores de cada pantalla
+ *  con colores personalizados (fondo morado, texto blanco).
+ * ============================================
+ */
+
 @file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.example.android.architecture.blueprints.todoapp.util

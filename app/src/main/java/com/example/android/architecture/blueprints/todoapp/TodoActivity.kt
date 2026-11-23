@@ -13,6 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * ============================================
+ *  ToDoApp - U4RA7 | UTTN TI4F
+ *  Desarrollador: Hurtado Perez Rodrigo Daniel
+ *  Archivo: TodoActivity.kt
+ *  Descripción: Actividad principal y punto de entrada
+ *  de la app. Carga el tema visual (TodoTheme) y el
+ *  grafo de navegación entre pantallas (TodoNavGraph).
+ * ============================================
+ */
 
 package com.example.android.architecture.blueprints.todoapp
 
@@ -25,16 +35,16 @@ import dagger.hilt.android.AndroidEntryPoint
 /**
  * Main activity for the todoapp
  */
-@AndroidEntryPoint
+@AndroidEntryPoint // Permite que Hilt inyecte dependencias en esta Activity
 class TodoActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge() // La UI ocupa toda la pantalla
         setContent {
-            TodoTheme {
-                TodoNavGraph()
+            TodoTheme {          // Aplica los colores personalizados
+                TodoNavGraph()   // Controla la navegación entre pantallas
             }
         }
     }
-}
+}}

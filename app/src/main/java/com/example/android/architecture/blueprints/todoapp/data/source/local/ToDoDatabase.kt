@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
+/**
+ * ============================================
+ *  ToDoApp - U4RA7 | UTTN TI4F
+ *  Desarrollador: Hurtado Perez Rodrigo Daniel
+ *  Archivo: ToDoDatabase.kt
+ *  Descripción: [ROOM - DATABASE] Clase principal de la base de
+ *  datos local. Registra la tabla LocalTask y expone el TaskDao.
+ * ============================================
+ */
+
 package com.example.android.architecture.blueprints.todoapp.data.source.local
 
 import androidx.room.Database
@@ -24,8 +34,10 @@ import androidx.room.RoomDatabase
  *
  * Note that exportSchema should be true in production databases.
  */
+
+// Base de datos Room: tabla LocalTask, versión 1 del esquema
 @Database(entities = [LocalTask::class], version = 1, exportSchema = false)
 abstract class ToDoDatabase : RoomDatabase() {
-
+    // Da acceso a las consultas definidas en TaskDao
     abstract fun taskDao(): TaskDao
 }

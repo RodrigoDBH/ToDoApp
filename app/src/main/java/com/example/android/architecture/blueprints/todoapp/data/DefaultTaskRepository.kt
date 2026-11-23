@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
+/**
+ * ============================================
+ *  ToDoApp - U4RA7 | UTTN TI4F
+ *  Desarrollador: Perez Flores Zayda Yareth
+ *  Archivo: DefaultTaskRepository.kt
+ *  Descripción: [REPOSITORIO] Intermediario entre los ViewModels
+ *  y la base de datos Room. Toda lectura/escritura pasa por aquí.
+ * ============================================
+ */
+
 package com.example.android.architecture.blueprints.todoapp.data
 
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TaskDao
@@ -43,6 +53,7 @@ import javax.inject.Singleton
 @Singleton
 class DefaultTaskRepository @Inject constructor(
     private val networkDataSource: NetworkDataSource,
+    // Fuente de datos local (Room)
     private val localDataSource: TaskDao,
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
     @ApplicationScope private val scope: CoroutineScope,

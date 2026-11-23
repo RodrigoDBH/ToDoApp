@@ -1,3 +1,12 @@
+/**
+ * ============================================
+ *  ToDoApp - U4RA7 | UTTN TI4F
+ *  Desarrollador: Perez Florez Zayda Yareth
+ *  Archivo: TodoTheme.kt
+ *  Descripción: [UI - TEMA] Paleta de colores personalizada
+ *  (morado y naranja) aplicada a toda la app.
+ * ============================================
+ */
 package com.example.android.architecture.blueprints.todoapp
 
 import androidx.compose.material3.MaterialTheme

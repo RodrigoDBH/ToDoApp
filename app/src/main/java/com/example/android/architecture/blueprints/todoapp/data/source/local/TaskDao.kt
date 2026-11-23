@@ -13,6 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * ============================================
+ *  ToDoApp - U4RA7 | UTTN TI4F
+ *  Desarrollador: Hurtado Perez Rodrigo Daniel
+ *  Archivo: TaskDao.kt
+ *  Descripción: Room: consultas SQL para leer, guardar, actualizar y borrar tareas
+ * ============================================
+ */
 
 package com.example.android.architecture.blueprints.todoapp.data.source.local
 
@@ -32,7 +40,7 @@ interface TaskDao {
      *
      * @return all tasks.
      */
-    @Query("SELECT * FROM task")
+    @Query("SELECT * FROM task") // Obtiene todas las tareas en tiempo real (Flow)
     fun observeAll(): Flow<List<LocalTask>>
 
     /**
@@ -41,7 +49,7 @@ interface TaskDao {
      * @param taskId the task id.
      * @return the task with taskId.
      */
-    @Query("SELECT * FROM task WHERE id = :taskId")
+    @Query("SELECT * FROM task WHERE id = :taskId") // Busca una tarea por su id
     fun observeById(taskId: String): Flow<LocalTask>
 
     /**
@@ -49,7 +57,7 @@ interface TaskDao {
      *
      * @return all tasks.
      */
-    @Query("SELECT * FROM task")
+    @Query("SELECT * FROM task") // Marca una tarea como completada o pendiente
     suspend fun getAll(): List<LocalTask>
 
     /**
@@ -58,7 +66,7 @@ interface TaskDao {
      * @param taskId the task id.
      * @return the task with taskId.
      */
-    @Query("SELECT * FROM task WHERE id = :taskId")
+    @Query("SELECT * FROM task WHERE id = :taskId") // Borra una tarea por su id
     suspend fun getById(taskId: String): LocalTask?
 
     /**
@@ -83,7 +91,7 @@ interface TaskDao {
      * @param taskId id of the task
      * @param completed status to be updated
      */
-    @Query("UPDATE task SET isCompleted = :completed WHERE id = :taskId")
+    @Query("UPDATE task SET isCompleted = :completed WHERE id = :taskId") // Marca una tarea como completada o pendiente
     suspend fun updateCompleted(taskId: String, completed: Boolean)
 
     /**
@@ -91,13 +99,13 @@ interface TaskDao {
      *
      * @return the number of tasks deleted. This should always be 1.
      */
-    @Query("DELETE FROM task WHERE id = :taskId")
+    @Query("DELETE FROM task WHERE id = :taskId") // Borra una tarea por su id
     suspend fun deleteById(taskId: String): Int
 
     /**
      * Delete all tasks.
      */
-    @Query("DELETE FROM task")
+    @Query("DELETE FROM task") // Borra todas las tareas
     suspend fun deleteAll()
 
     /**
@@ -105,6 +113,6 @@ interface TaskDao {
      *
      * @return the number of tasks deleted.
      */
-    @Query("DELETE FROM task WHERE isCompleted = 1")
+    @Query("DELETE FROM task WHERE isCompleted = 1") // Borra solo las tareas completadas
     suspend fun deleteCompleted(): Int
 }

@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
+/**
+ * ============================================
+ *  ToDoApp - U4RA7 | UTTN TI4F
+ *  Desarrollador: Hurtado Perez Rodrigo Daniel
+ *  Archivo: AddEditTaskScreen.kt
+ *  Descripción: [UI - COMPOSE] Pantalla para crear una tarea
+ *  nueva o editar una existente (título y descripción).
+ * ============================================
+ */
+
 @file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.example.android.architecture.blueprints.todoapp.addedittask
