@@ -18,7 +18,6 @@ package com.example.android.architecture.blueprints.todoapp.tasks
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -48,7 +47,6 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,6 +61,14 @@ import com.example.android.architecture.blueprints.todoapp.tasks.TasksFilterType
 import com.example.android.architecture.blueprints.todoapp.tasks.TasksFilterType.COMPLETED_TASKS
 import com.example.android.architecture.blueprints.todoapp.util.LoadingContent
 import com.example.android.architecture.blueprints.todoapp.util.TasksTopAppBar
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.outlined.TaskAlt
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun TasksScreen(
@@ -207,6 +213,10 @@ private fun TaskItem(
     }
 }
 
+/**
+ * Empty State personalizado: se muestra cuando la consulta a Room
+ * no regresa ninguna tarea para el filtro actual.
+ */
 @Composable
 private fun TasksEmptyContent(
     @StringRes noTasksLabel: Int,
@@ -214,16 +224,42 @@ private fun TasksEmptyContent(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(32.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(id = noTasksIconRes),
-            contentDescription = stringResource(R.string.no_tasks_image_content_description),
-            modifier = Modifier.size(96.dp)
+        // Círculo de fondo con ícono
+        Box(
+            modifier = Modifier
+                .size(140.dp)
+                .background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.TaskAlt,
+                contentDescription = stringResource(R.string.no_tasks_image_content_description),
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(72.dp)
+            )
+        }
+        Spacer(Modifier.height(24.dp))
+        // Mensaje principal (cambia según el filtro)
+        Text(
+            text = stringResource(id = noTasksLabel),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
         )
-        Text(stringResource(id = noTasksLabel))
+        Spacer(Modifier.height(8.dp))
+        // Mensaje secundario de ayuda
+        Text(
+            text = stringResource(R.string.empty_state_hint),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
