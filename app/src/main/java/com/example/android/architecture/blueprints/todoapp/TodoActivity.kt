@@ -16,7 +16,8 @@
 /**
  * ============================================
  *  ToDoApp - U4RA7 | UTTN TI4F
- *  Desarrollador: Hurtado Perez Rodrigo Daniel
+ *  Desarrolladores: Hurtado Perez Rodrigo Daniel
+ *                   Perez Flores Zayda Yareth
  *  Archivo: TodoActivity.kt
  *  Descripción: Actividad principal y punto de entrada
  *  de la app. Carga el tema visual (TodoTheme) y el
