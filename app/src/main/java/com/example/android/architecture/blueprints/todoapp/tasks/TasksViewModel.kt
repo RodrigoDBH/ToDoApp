@@ -99,16 +99,27 @@ class TasksViewModel @Inject constructor(
             initialValue = TasksUiState(isLoading = true)
         )
 
+    // [INNOVACIÓN] Contador de tareas pendientes leído desde Room (consulta COUNT)
+    val activeCount: StateFlow<Int> = taskRepository.getActiveTasksCountStream()
+        .stateIn(viewModelScope, WhileUiSubscribed, 0)
+
     fun setFiltering(requestType: TasksFilterType) {
         savedStateHandle[TASKS_FILTER_SAVED_STATE_KEY] = requestType
     }
 
+    // [CORRECCIÓN] Se quitó refresh(): Room actualiza la lista automáticamente (Flow)
+    // y así el Empty State aparece de inmediato al borrar las completadas
     fun clearCompletedTasks() {
         viewModelScope.launch {
             taskRepository.clearCompletedTasks()
             showSnackbarMessage(R.string.completed_tasks_cleared)
-            refresh()
         }
+    }
+
+    // [INNOVACIÓN] Elimina una tarea al deslizarla en la lista (DELETE en Room)
+    fun deleteTask(task: Task) = viewModelScope.launch {
+        taskRepository.deleteTask(task.id)
+        showSnackbarMessage(R.string.successfully_deleted_task_message)
     }
 
     fun completeTask(task: Task, completed: Boolean) = viewModelScope.launch {

@@ -115,4 +115,12 @@ interface TaskDao {
      */
     @Query("DELETE FROM task WHERE isCompleted = 1") // Borra solo las tareas completadas
     suspend fun deleteCompleted(): Int
+
+    // [INNOVACIÓN] Cuenta las tareas pendientes en tiempo real (contador en pantalla)
+    @Query("SELECT COUNT(*) FROM task WHERE isCompleted = 0")
+    fun observeActiveCount(): Flow<Int>
+
+    // [INNOVACIÓN] Cambia la prioridad de una tarea (0 = baja, 1 = media, 2 = alta)
+    @Query("UPDATE task SET priority = :priority WHERE id = :taskId")
+    suspend fun updatePriority(taskId: String, priority: Int)
 }

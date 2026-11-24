@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 <resources>
-    <string name="app_name">ToDoApp Rodrigo</string>
+    <string name="app_name">ToDoApp RZ</string>
     <string name="add_task">Nueva tarea</string>
     <string name="edit_task">Editar tarea</string>
     <string name="task_details">Detalle de la tarea</string>
@@ -31,7 +31,7 @@
     <string name="menu_clear">Borrar completadas</string>
     <string name="menu_delete_task">Eliminar tarea</string>
     <string name="menu_more">Más</string>
-    <string name="navigation_view_header_title">ToDoApp</string>
+    <string name="navigation_view_header_title">ToDoApp RZ</string>
     <string name="title_hint">Título</string>
     <string name="description_hint">Escribe aquí tu tarea…</string>
     <string name="cd_save_task">Guardar tarea</string>
@@ -69,4 +69,15 @@
     <!-- Content Descriptions -->
     <string name="tasks_header_image_content_description">Imagen de encabezado</string>
     <string name="no_tasks_image_content_description">Sin tareas</string>
+
+    <!-- [INNOVACIÓN] Textos de las funciones nuevas -->
+    <string name="active_tasks_count">Pendientes: %1$d</string>
+    <string name="delete_dialog_title">¿Eliminar tarea?</string>
+    <string name="delete_dialog_message">Esta acción no se puede deshacer.</string>
+    <string name="delete_dialog_confirm">Eliminar</string>
+    <string name="delete_dialog_cancel">Cancelar</string>
+    <string name="priority_label">Prioridad</string>
+    <string name="priority_low">Baja</string>
+    <string name="priority_medium">Media</string>
+    <string name="priority_high">Alta</string>
 </resources>

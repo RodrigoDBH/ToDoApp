@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
+/**
+ * ============================================
+ *  ToDoApp - U4RA7 | UTTN TI4F
+ *  Equipo: Hurtado Perez Rodrigo Daniel
+ *          Perez Flores Zayda Yareth
+ *  Archivo: AddEditTaskViewModel.kt
+ *  Descripción: [VIEWMODEL] Lógica para crear o editar una tarea.
+ *  [INNOVACIÓN] Guarda también la prioridad en Room.
+ * ============================================
+ */
+
 package com.example.android.architecture.blueprints.todoapp.addedittask
 
 import androidx.lifecycle.SavedStateHandle
@@ -36,6 +47,7 @@ import javax.inject.Inject
 data class AddEditTaskUiState(
     val title: String = "",
     val description: String = "",
+    val priority: Int = 1, // [INNOVACIÓN] Prioridad seleccionada
     val isTaskCompleted: Boolean = false,
     val isLoading: Boolean = false,
     val userMessage: Int? = null,
@@ -99,8 +111,17 @@ class AddEditTaskViewModel @Inject constructor(
         }
     }
 
+    // [INNOVACIÓN] Cambia la prioridad seleccionada en pantalla
+    fun updatePriority(newPriority: Int) {
+        _uiState.update {
+            it.copy(priority = newPriority)
+        }
+    }
+
     private fun createNewTask() = viewModelScope.launch {
-        taskRepository.createTask(uiState.value.title, uiState.value.description)
+        val newTaskId = taskRepository.createTask(uiState.value.title, uiState.value.description)
+        // [INNOVACIÓN] Guarda la prioridad de la tarea nueva en Room
+        taskRepository.updatePriority(newTaskId, uiState.value.priority)
         _uiState.update {
             it.copy(isTaskSaved = true)
         }
@@ -116,6 +137,8 @@ class AddEditTaskViewModel @Inject constructor(
                 title = uiState.value.title,
                 description = uiState.value.description,
             )
+            // [INNOVACIÓN] Actualiza la prioridad en Room
+            taskRepository.updatePriority(taskId, uiState.value.priority)
             _uiState.update {
                 it.copy(isTaskSaved = true)
             }
@@ -133,6 +156,7 @@ class AddEditTaskViewModel @Inject constructor(
                         it.copy(
                             title = task.title,
                             description = task.description,
+                            priority = task.priority, // [INNOVACIÓN]
                             isTaskCompleted = task.isCompleted,
                             isLoading = false
                         )

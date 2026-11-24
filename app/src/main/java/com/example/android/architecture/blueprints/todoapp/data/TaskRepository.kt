@@ -17,6 +17,7 @@
 package com.example.android.architecture.blueprints.todoapp.data
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /**
  * Interface to the data layer.
@@ -48,4 +49,11 @@ interface TaskRepository {
     suspend fun deleteAllTasks()
 
     suspend fun deleteTask(taskId: String)
+
+    // [INNOVACIÓN] Cantidad de tareas pendientes en tiempo real
+    fun getActiveTasksCountStream(): Flow<Int> =
+        getTasksStream().map { tasks -> tasks.count { it.isActive } }
+
+    // [INNOVACIÓN] Cambia la prioridad de una tarea
+    suspend fun updatePriority(taskId: String, priority: Int) {}
 }

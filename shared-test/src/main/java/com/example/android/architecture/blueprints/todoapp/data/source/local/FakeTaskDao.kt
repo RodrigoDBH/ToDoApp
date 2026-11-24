@@ -76,4 +76,13 @@ class FakeTaskDao(initialTasks: List<LocalTask>? = emptyList()) : TaskDao {
     override fun observeById(taskId: String): Flow<LocalTask> {
         TODO("Not implemented")
     }
+
+    // [INNOVACIÓN] Implementaciones de prueba de las consultas nuevas
+    override fun observeActiveCount(): Flow<Int> {
+        TODO("Not implemented")
+    }
+
+    override suspend fun updatePriority(taskId: String, priority: Int) {
+        _tasks?.get(taskId)?.let { it.priority = priority }
+    }
 }

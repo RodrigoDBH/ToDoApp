@@ -123,6 +123,16 @@ class DefaultTaskRepository @Inject constructor(
         return localDataSource.getById(taskId)?.toExternal()
     }
 
+    // [INNOVACIÓN] Cuenta las tareas pendientes usando la consulta COUNT de Room
+    override fun getActiveTasksCountStream(): Flow<Int> =
+        localDataSource.observeActiveCount()
+
+    // [INNOVACIÓN] Guarda la prioridad de una tarea en Room
+    override suspend fun updatePriority(taskId: String, priority: Int) {
+        localDataSource.updatePriority(taskId, priority)
+        saveTasksToNetwork()
+    }
+
     override suspend fun completeTask(taskId: String) {
         localDataSource.updateCompleted(taskId = taskId, completed = true)
         saveTasksToNetwork()

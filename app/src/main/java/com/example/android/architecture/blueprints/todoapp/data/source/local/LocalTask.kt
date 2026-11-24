@@ -25,6 +25,7 @@
 
 package com.example.android.architecture.blueprints.todoapp.data.source.local
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -47,4 +48,6 @@ data class LocalTask(
     var title: String,
     var description: String,
     var isCompleted: Boolean,
+    // [INNOVACIÓN] Nueva columna "priority": 0 = baja, 1 = media, 2 = alta
+    @ColumnInfo(defaultValue = "1") var priority: Int = 1,
 )

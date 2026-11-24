@@ -66,6 +66,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.util.AddEditTaskTopAppBar
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.FilterChip
+import com.example.android.architecture.blueprints.todoapp.util.PRIORITY_LEVELS
+import com.example.android.architecture.blueprints.todoapp.util.PRIORITY_MEDIUM
+import com.example.android.architecture.blueprints.todoapp.util.priorityColor
+import com.example.android.architecture.blueprints.todoapp.util.priorityLabel
 
 @Composable
 fun AddEditTaskScreen(
@@ -94,6 +105,8 @@ fun AddEditTaskScreen(
             description = uiState.description,
             onTitleChanged = viewModel::updateTitle,
             onDescriptionChanged = viewModel::updateDescription,
+            priority = uiState.priority,                     // [INNOVACIÓN]
+            onPriorityChanged = viewModel::updatePriority,   // [INNOVACIÓN]
             modifier = Modifier.padding(paddingValues)
         )
 
@@ -122,6 +135,8 @@ private fun AddEditTaskContent(
     description: String,
     onTitleChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,
+    priority: Int = PRIORITY_MEDIUM,            // [INNOVACIÓN] Prioridad actual
+    onPriorityChanged: (Int) -> Unit = {},      // [INNOVACIÓN] Al elegir prioridad
     modifier: Modifier = Modifier
 ) {
     var isRefreshing by remember { mutableStateOf(false) }
@@ -160,6 +175,31 @@ private fun AddEditTaskContent(
                 maxLines = 1,
                 colors = textFieldColors
             )
+            // [INNOVACIÓN] Selector de prioridad (se guarda en la columna "priority" de Room)
+            Text(
+                text = stringResource(R.string.priority_label),
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.padding(start = 16.dp, top = 8.dp)
+            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                PRIORITY_LEVELS.forEach { level ->
+                    FilterChip(
+                        selected = priority == level,
+                        onClick = { onPriorityChanged(level) },
+                        label = { Text(stringResource(priorityLabel(level))) },
+                        leadingIcon = {
+                            Box(
+                                Modifier
+                                    .size(10.dp)
+                                    .background(priorityColor(level), CircleShape)
+                            )
+                        }
+                    )
+                }
+            }
             OutlinedTextField(
                 value = description,
                 onValueChange = onDescriptionChanged,

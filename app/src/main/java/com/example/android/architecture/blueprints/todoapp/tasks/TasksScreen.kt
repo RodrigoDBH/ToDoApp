@@ -78,6 +78,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
+import com.example.android.architecture.blueprints.todoapp.util.priorityColor
 
 @Composable
 fun TasksScreen(
@@ -110,6 +116,8 @@ fun TasksScreen(
         }
     ) { paddingValues ->
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        // [INNOVACIÓN] Número de tareas pendientes (consulta COUNT en Room)
+        val activeCount by viewModel.activeCount.collectAsStateWithLifecycle()
 
         TasksContent(
             loading = uiState.isLoading,
@@ -120,6 +128,8 @@ fun TasksScreen(
             onRefresh = viewModel::refresh,
             onTaskClick = onTaskClick,
             onTaskCheckedChange = viewModel::completeTask,
+            activeCount = activeCount,
+            onDeleteTask = viewModel::deleteTask,
             modifier = Modifier.padding(paddingValues)
         )
 
@@ -143,6 +153,7 @@ fun TasksScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TasksContent(
     loading: Boolean,
@@ -153,6 +164,8 @@ private fun TasksContent(
     onRefresh: () -> Unit,
     onTaskClick: (Task) -> Unit,
     onTaskCheckedChange: (Task, Boolean) -> Unit,
+    activeCount: Int = 0,                 // [INNOVACIÓN] Contador de pendientes
+    onDeleteTask: (Task) -> Unit = {},    // [INNOVACIÓN] Deslizar para borrar
     modifier: Modifier = Modifier
 ) {
     LoadingContent(
@@ -174,13 +187,56 @@ private fun TasksContent(
                 ),
                 style = MaterialTheme.typography.headlineSmall
             )
+            // [INNOVACIÓN] Contador de tareas pendientes
+            Text(
+                text = stringResource(R.string.active_tasks_count, activeCount),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(
+                    horizontal = dimensionResource(id = R.dimen.list_item_padding)
+                )
+            )
             LazyColumn {
-                items(tasks) { task ->
-                    TaskItem(
-                        task = task,
-                        onTaskClick = onTaskClick,
-                        onCheckedChange = { onTaskCheckedChange(task, it) }
+                items(tasks, key = { it.id }) { task ->
+                    // [INNOVACIÓN] Deslizar la tarea a la izquierda para eliminarla
+                    val dismissState = rememberSwipeToDismissBoxState(
+                        confirmValueChange = { value ->
+                            if (value == SwipeToDismissBoxValue.EndToStart) {
+                                onDeleteTask(task)
+                                true
+                            } else {
+                                false
+                            }
+                        }
                     )
+                    SwipeToDismissBox(
+                        state = dismissState,
+                        enableDismissFromStartToEnd = false,
+                        backgroundContent = {
+                            // Fondo rojo con bote de basura que aparece al deslizar
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.colorScheme.errorContainer)
+                                    .padding(horizontal = 24.dp),
+                                contentAlignment = Alignment.CenterEnd
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Delete,
+                                    contentDescription = stringResource(R.string.menu_delete_task),
+                                    tint = MaterialTheme.colorScheme.onErrorContainer
+                                )
+                            }
+                        }
+                    ) {
+                        Surface {
+                            TaskItem(
+                                task = task,
+                                onTaskClick = onTaskClick,
+                                onCheckedChange = { onTaskCheckedChange(task, it) }
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -206,6 +262,13 @@ private fun TaskItem(
         Checkbox(
             checked = task.isCompleted,
             onCheckedChange = onCheckedChange
+        )
+        // [INNOVACIÓN] Punto de color según la prioridad guardada en Room
+        Box(
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .size(12.dp)
+                .background(priorityColor(task.priority), CircleShape)
         )
         Text(
             text = task.titleForList,

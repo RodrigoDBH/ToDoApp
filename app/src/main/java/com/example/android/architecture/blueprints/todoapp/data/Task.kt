@@ -32,6 +32,8 @@ data class Task(
     val description: String = "",
     val isCompleted: Boolean = false,
     val id: String,
+    // [INNOVACIÓN] Prioridad de la tarea: 0 = baja, 1 = media, 2 = alta
+    val priority: Int = 1,
 ) {
 
     val titleForList: String

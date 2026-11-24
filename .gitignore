@@ -6,3 +6,6 @@ local.properties
 build
 captures
 .externalNativeBuild
+
+# Archivos temporales del compilador de Kotlin
+.kotlin/

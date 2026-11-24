@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
+/**
+ * ============================================
+ *  ToDoApp - U4RA7 | UTTN TI4F
+ *  Equipo: Hurtado Perez Rodrigo Daniel
+ *          Perez Flores Zayda Yareth
+ *  Archivo: TaskDetailScreen.kt
+ *  Descripción: [UI - COMPOSE] Pantalla de detalle de una tarea.
+ *  [INNOVACIÓN] Pide confirmación antes de eliminar la tarea.
+ * ============================================
+ */
+
 package com.example.android.architecture.blueprints.todoapp.taskdetail
 
 import androidx.compose.foundation.layout.Column
@@ -38,6 +49,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -59,10 +74,14 @@ fun TaskDetailScreen(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 
 ) {
+    // [INNOVACIÓN] Controla si se muestra el diálogo de confirmación
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = { TaskDetailTopAppBar(onBack = onBack, onDelete = viewModel::deleteTask) },
+        // [INNOVACIÓN] El bote de basura ahora abre el diálogo en lugar de borrar directo
+        topBar = { TaskDetailTopAppBar(onBack = onBack, onDelete = { showDeleteDialog = true }) },
         floatingActionButton = {
             SmallFloatingActionButton(onClick = { onEditTask(viewModel.taskId) }) {
                 Icon(Icons.Filled.Edit, stringResource(id = R.string.edit_task))
@@ -70,6 +89,28 @@ fun TaskDetailScreen(
         }
     ) { paddingValues ->
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+        // [INNOVACIÓN] Diálogo para confirmar la eliminación de la tarea
+        if (showDeleteDialog) {
+            AlertDialog(
+                onDismissRequest = { showDeleteDialog = false },
+                title = { Text(stringResource(R.string.delete_dialog_title)) },
+                text = { Text(stringResource(R.string.delete_dialog_message)) },
+                confirmButton = {
+                    TextButton(onClick = {
+                        showDeleteDialog = false
+                        viewModel.deleteTask()
+                    }) {
+                        Text(stringResource(R.string.delete_dialog_confirm))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDeleteDialog = false }) {
+                        Text(stringResource(R.string.delete_dialog_cancel))
+                    }
+                }
+            )
+        }
 
         EditTaskContent(
             loading = uiState.isLoading,
